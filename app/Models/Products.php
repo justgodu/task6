@@ -15,4 +15,13 @@ class Products extends Model
         'description',
         'price'
     ];
+
+    public function user(){
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function category(){
+        return $this->belongsToMany('App\Models\Categories',null, 'product_id','category_id');
+    }
+
 }

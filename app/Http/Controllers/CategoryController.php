@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Categories;
 use App\Models\Products;
-class ProductsController extends Controller
+use Illuminate\Http\Request;
+
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +15,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        return view('products.index', ["products"=>Products::get()]);
+        //
     }
 
     /**
@@ -23,7 +25,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view("products.create");
+        //
     }
 
     /**
@@ -34,13 +36,7 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        Products::create([
-            "title" => $request->input('title'),
-            "price" => $request->input('price'),
-            "user_id" => auth()->user()->id,
-            "description" => $request->input('description'),
-        ]);
-        return redirect()->route('products');
+        //
     }
 
     /**
@@ -62,7 +58,7 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        return view('products.edit', ["product"=>Products::where("id", $id)->first()]);
+        //
     }
 
     /**
@@ -74,13 +70,7 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Products::where('id', $id)
-        ->update(['title' => $request->input('title'),
-                 'description'=>$request->input('description'),
-                 'price'=>$request->input('price')
-                 ]
-                );
-                return redirect()->back();
+        //
     }
 
     /**
@@ -91,20 +81,10 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        Products::where("id", $id)->delete();
-        return redirect()->back();
+        //
     }
-
-    public function user()
+    public function products()
     {
-        return Products::with(['user'])->get();
+        return Categories::with(['products'])->get();
     }
-
-    public function categories()
-    {
-        return Products::with(['category'])->get();
-    }
-
-
-
 }

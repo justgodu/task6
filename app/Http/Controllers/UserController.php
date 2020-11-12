@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Products;
-class ProductsController extends Controller
+use App\Models\User;
+
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +14,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        return view('products.index', ["products"=>Products::get()]);
+        return User::with(["phone"])->get();
     }
 
     /**
@@ -23,7 +24,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view("products.create");
+        //
     }
 
     /**
@@ -34,13 +35,7 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        Products::create([
-            "title" => $request->input('title'),
-            "price" => $request->input('price'),
-            "user_id" => auth()->user()->id,
-            "description" => $request->input('description'),
-        ]);
-        return redirect()->route('products');
+        //
     }
 
     /**
@@ -62,7 +57,7 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        return view('products.edit', ["product"=>Products::where("id", $id)->first()]);
+        //
     }
 
     /**
@@ -74,13 +69,7 @@ class ProductsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        Products::where('id', $id)
-        ->update(['title' => $request->input('title'),
-                 'description'=>$request->input('description'),
-                 'price'=>$request->input('price')
-                 ]
-                );
-                return redirect()->back();
+        //
     }
 
     /**
@@ -91,20 +80,29 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        Products::where("id", $id)->delete();
-        return redirect()->back();
+        //
     }
-
-    public function user()
+    public function onetone()
     {
-        return Products::with(['user'])->get();
+        return User::with(["phone"])->get();
     }
 
-    public function categories()
+    public function onetomany()
     {
-        return Products::with(['category'])->get();
+        return User::with(["product"])->get();
     }
 
+    public function productjoin()
+    {
+        return User::join("products", "user_id", "users.id")->get();
+    }
 
-
+    public function phonejoinleft()
+    {
+        return User::leftJoin("phone_nums", "user_id", "users.id")->get();
+    }
+    public function phonejoinright()
+    {
+        return User::rightJoin("phone_nums", "user_id", "users.id")->get();
+    }
 }
